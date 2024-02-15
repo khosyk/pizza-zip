@@ -5,7 +5,7 @@ type Props = {};
 
 export default function MenuItem({}: Props) {
 	return (
-		<div className="bg-white shadow-sm shadow-gray-300 p-4 rounded-lg relative flex flex-col hover:shadow-xl hover:shadow-black/10 transition-all">
+		<div className="bg-gray-100 shadow-sm shadow-gray-300 p-4 rounded-lg relative flex flex-col hover:bg-white hover:shadow-md hover:shadow-black/25 transition-all">
 			<div className="relative w-full h-[100px] sm:h-[200px] ">
 				<Image
 					src={"/pizza.png"}
