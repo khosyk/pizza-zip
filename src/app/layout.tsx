@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={noto.className}>
-        <main className="max-w-4xl mx-auto p-4">
+        <main className="max-w-4xl mx-auto">
         {children}
         </main>
       </body>

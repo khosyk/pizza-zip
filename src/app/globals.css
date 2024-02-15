@@ -6,3 +6,10 @@ section.hero{
   @apply grid;
   grid-template-columns: .4fr .6fr;
 }
+
+.right_hero {
+  @media (max-width: 780px) {
+    width:100%;
+    max-width: 180px;
+  }
+}

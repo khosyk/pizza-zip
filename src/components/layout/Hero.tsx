@@ -1,10 +1,13 @@
 import Image from "next/image";
-import React from "react";
+import React, { Suspense } from "react";
 import Right from "../icons/Right";
+import PizzaWrap from "./PizzaWrap";
 
 // type Props = {}
 
 export default function Hero() {
+	const Pizza = React.lazy(() => import("./PizzaWrap"));
+
 	return (
 		<section className="hero">
 			<div className="py-12">
@@ -29,12 +32,22 @@ export default function Hero() {
 					</button>
 				</div>
 			</div>
-			<div className=" relative">
-				<Image
-					src={"/pizza.png"}
-					layout="fill"
-					objectFit="contain"
-					alt={"pizza"}></Image>
+			<div className="right_hero">
+				<Suspense
+					fallback={
+						// <Image
+						// 	className="pizza"
+						// 	src={"/pizza.png"}
+						// 	layout="fill"
+						// 	objectFit="contain"
+						// 	alt={"pizza"}
+						// />
+						<div
+							className="w-full h-full bg-gray-500"
+						/>
+					}>
+					<Pizza />
+				</Suspense>
 			</div>
 		</section>
 	);
