@@ -5,7 +5,7 @@ import React from 'react'
 
 export default function Header() {
   return (
-    <header className="flex items-center justify-between">
+    <header className="flex items-center justify-between p-5">
     <Link className="text-primary font-semibold text-2xl" href=''> PIZZA ZIP</Link>
     <nav className="flex gap-8 items-center text-gray-500 font-semibold">
       <Link href={''}>Home</Link>
