@@ -2,6 +2,7 @@ import Image from "next/image";
 import React, { Suspense } from "react";
 import Right from "../icons/Right";
 import PizzaWrap from "./PizzaWrap";
+import Loading from "./Loading";
 
 // type Props = {}
 
@@ -35,18 +36,11 @@ export default function Hero() {
 			<div className="right_hero">
 				<Suspense
 					fallback={
-						// <Image
-						// 	className="pizza"
-						// 	src={"/pizza.png"}
-						// 	layout="fill"
-						// 	objectFit="contain"
-						// 	alt={"pizza"}
-						// />
-						<div
-							className="w-full h-full bg-gray-500"
-						/>
+						<div className="flex justify-center items-center h-full ">
+							<Loading/>
+						</div>
 					}>
-					<Pizza />
+					{Pizza ? <Pizza /> : null}
 				</Suspense>
 			</div>
 		</section>
