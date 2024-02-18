@@ -1,9 +1,9 @@
 'use client'
 
-import Box from "@/components/layout/PizzaWrap";
-import Header from "@/components/layout/Header";
-import Hero from "@/components/layout/Hero";
-import HomeMenu from "@/components/layout/HomeMenu";
+import Box from "@/components/layout/Home/PizzaWrap";
+import Header from "@/components/layout/Home/Header";
+import Hero from "@/components/layout/Home/Hero";
+import HomeMenu from "@/components/layout/Home/HomeMenu";
 import { Canvas } from "@react-three/fiber";
 import Link from "next/link";
 

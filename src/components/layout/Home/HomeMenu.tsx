@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import MenuItem from "./MenuItem";
+import SectionHeaders from "./SectionHeaders";
 
 // type Props = {}
 
@@ -25,17 +26,11 @@ export default function HomeMenu() {
 						alt={"sallad"}></Image>
 				</div>
 			</div>
-			<div className="text-center">
-				<h3 className="uppercase text-gray-500 font-semibold leading-4">
-					Check out
-				</h3>
-				<h2 className="pb-3 text-primary font-bold text-4xl">Menu</h2>
-			</div>
+			<SectionHeaders title='Check Out' subTitle="Menu" />
       <div className="grid grid-cols-3 gap-4">
         <MenuItem/>        <MenuItem/>
         <MenuItem/>
         <MenuItem/>        <MenuItem/>
-        <MenuItem/>
         <MenuItem/>
       </div>
 		</section>

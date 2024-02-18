@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React, { Suspense } from "react";
-import Right from "../icons/Right";
+import Right from "../../icons/Right";
 import PizzaWrap from "./PizzaWrap";
 import Loading from "./Loading";
 
