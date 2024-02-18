@@ -2,14 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 
+body{
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+}
+
 section.hero{
   @apply grid;
-  grid-template-columns: .4fr .6fr;
+  grid-template-columns: .9fr 1fr;
+  justify-content: space-between;
+  padding: 0 20px 0 20px;
+  @media (max-width: 767px) {
+
+  }
+  @media (max-width: 575px) {
+    grid-template-columns: 180px 1fr;
+    padding: 0 10px 0 10px;
+  }
 }
 
 .right_hero {
-  @media (max-width: 780px) {
-    width:100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @media (max-width: 767px) {
+    
+  }
+  @media (max-width: 575px) {
     max-width: 180px;
   }
 }
