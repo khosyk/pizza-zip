@@ -11,7 +11,6 @@ import { FloatPizza } from '@/assets/FloatPizza';
 function PizzaWrap() {
   const [rotate,setRotate] = useState<boolean>(true);
   const handleClick = () =>{
-    console.log('clicked')
     setRotate(false);
   }
   
