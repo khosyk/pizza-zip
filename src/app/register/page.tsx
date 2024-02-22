@@ -1,6 +1,6 @@
 'use client'
 import Image from "next/image";
-import React, { InputHTMLAttributes, useCallback, useReducer, useState } from "react";
+import React, { InputHTMLAttributes, Reducer, ReducerState, useCallback, useReducer, useState } from "react";
 
 interface State {
   email: string;
@@ -32,16 +32,26 @@ export default function Register() {
     dispatch({ type: e.currentTarget.name, payload: e.currentTarget.value });
   }, []);
 
-	const handleSubmit = (e:React.FormEvent<HTMLFormElement>) =>{
+	const handleSubmit = async (e:React.FormEvent<HTMLFormElement>) =>{
 		e.preventDefault();
-		fetch('/api/register',{
+		try{
+			const res = await fetch('/api/register',{
 			method:'POST',
 			body:JSON.stringify({
 				email:state.email,
 				password:state.password
 			}),
 			headers:{"Content-Type": 'application/json'}
-		});
+		})
+		if(!res.ok){
+			console.log(res.statusText);
+			if(res.statusText.includes('EMAIL')) throw Error("email");
+			if(res.statusText.includes('PASSWORD')) throw Error("password");
+		}
+		console.log("SUCCEDD::", await res.json());
+	}catch(err){
+			console.log("ISEROR:",err);
+		}
 	}
 
 	return (
