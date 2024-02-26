@@ -1,29 +1,39 @@
-import NextAuth from 'next-auth/next'
+import mongoose, { Query } from 'mongoose';
 import CredentialsProvider from "next-auth/providers/credentials"
+import { User } from '../../models/User';
+import bcrypt from 'bcrypt';
+import NextAuth from 'next-auth';
+import { NextResponse } from 'next/server';
 
-export default NextAuth({
+interface UserQuery extends Query<any, any, {}, any, "findOne">{
+  password?:string;
+}
+
+const handler = NextAuth({
+  secret:process.env.SECRET,
   providers: [
     CredentialsProvider({
       name: 'Credentials',
+      id:'credentials',
       credentials: {
-        username: { label: "Email", type: "text", placeholder: "yourEmail@email.com" },
+        email: { label: "Email", type: "text", placeholder: "yourEmail@email.com" },
         password: { label: "Password", type: "password" }
       },
-      async authorize(credentials, req) {
-        const res = await fetch("/api/register", {
-          method: 'POST',
-          body: JSON.stringify(credentials),
-          headers: { "Content-Type": "application/json" }
-        })
-        const user = await res.json()
-  
-        if (res.ok && user) {
-          return user
-        }
+      async authorize(credentials: Record<"email" | "password", string> | undefined, _) {
+        const email = credentials?.email;
+        const password = credentials?.password;
+        mongoose.connect(process.env.MONGO as string);
+        const user:UserQuery = await User.findOne({email});
+        const passwordOk  = user && bcrypt.compareSync(password as string, user?.password as string);
         
+        if(passwordOk){
+          return user;
+        }
         return null
       }
     })
   ]
 })
+
+export { handler as GET, handler as POST }
 
