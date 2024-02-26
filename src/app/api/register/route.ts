@@ -10,9 +10,8 @@ export async function POST(req:NextRequest){
   try{
     const body = await req.json();
     mongoose.connect(process.env.MONGO as string);
-    const createdUser = await User.create(body);
-    // console.log('check here',createdUser);
-    return NextResponse.json({message:'eee'});
+    await User.create(body);
+    return NextResponse.json({message:'created'});
   }catch(err:any){
     if(err.message.includes('EMAIL'))return NextResponse.json({message:'please, check again your email'}, {status:500, statusText:"EMAIL ERROR"});
     
