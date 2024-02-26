@@ -53,7 +53,7 @@ export default function Register() {
 			});
 			if (!ok) {
 				if (statusText.includes("duplicate")) throw Error("duplicate");
-				throw Error();
+				throw Error('else');
 			}
 			setCreatingUser(false);
 			setUserCreated(true);
