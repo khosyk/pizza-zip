@@ -14,9 +14,9 @@ export async function POST(req:NextRequest){
     // console.log('check here',createdUser);
     return NextResponse.json({message:'eee'});
   }catch(err:any){
-    if(err.message.includes('EMAIL'))return NextResponse.json({}, {status:500, statusText:"EMAIL ERROR"});
+    if(err.message.includes('EMAIL'))return NextResponse.json({message:'please, check again your email'}, {status:500, statusText:"EMAIL ERROR"});
     
-    if(err.message.includes('PASSWORD'))return NextResponse.json({}, {status:500,statusText:"PASSWORD ERROR"});
+    if(err.message.includes('PASSWORD'))return NextResponse.json({message:'please, check again your email'}, {status:500,statusText:"PASSWORD ERROR"});
     return NextResponse.json({}, {status:500,statusText:err.message})
     }
 }

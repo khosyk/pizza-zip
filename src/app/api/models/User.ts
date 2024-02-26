@@ -7,6 +7,7 @@ type User = {
 }
 
 const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+const passwordRegex = /^(?!((?:[A-Za-z]+)|(?:[~!@#$%^&*()_+=]+)|(?:[0-9]+))$)[A-Za-z\d~!@#$%^&*()_+=]{8,20}$/   //8~20자 영문자or수자or특수문자 2가지 이상 조합 
 
 const UserSchema = new Schema<User>({
   email: { 
@@ -26,7 +27,8 @@ const UserSchema = new Schema<User>({
     required: true,
     validate: { 
       validator: function(pass:string) { //커스텀 벨리데이터 작성
-        if(!(pass.length > 8 && pass.length < 21))throw new Error('PASSWORD') //false 인 경우 아래 메시지와 함께 500 에러
+        if(!(pass.length > 8 && pass.length < 21))throw new Error('PASSWORD')         
+        if(!passwordRegex.test(pass))throw new Error('PASSWORD');
       }
     },
   }
