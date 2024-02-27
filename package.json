@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "prettier --check --ignore-path .gitignore .",
+    "format:fix": "prettier --write --ignore-path .gitignore ."
   },
   "dependencies": {
     "@react-three/drei": "^9.97.5",
@@ -14,11 +16,17 @@
     "@types/bcrypt": "^5.0.2",
     "@types/mongoose": "^5.11.97",
     "@types/three": "^0.161.2",
+    "@typescript-eslint/eslint-plugin": "6.0.0",
+    "@typescript-eslint/parser": "6.0.0",
     "bcrypt": "^5.1.1",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.1.0",
+    "eslint-config-prettier": "^9.1.0",
     "gltfjsx": "^6.2.16",
     "mongoose": "^8.1.3",
     "next": "14.1.0",
     "next-auth": "^4.24.6",
+    "prettier": "^3.2.5",
     "react": "^18",
     "react-dom": "^18",
     "three": "^0.161.0"
