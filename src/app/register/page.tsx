@@ -1,7 +1,8 @@
 "use client";
+import { handleGoogleLogin } from "@/utils/login/providers";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useCallback, useReducer, useState } from "react";
+import React, { useCallback, useEffect, useReducer, useState } from "react";
 
 interface State {
 	email: string;
@@ -117,7 +118,7 @@ export default function Register() {
 				<div className="my-4 text-center text-gray-500">
 					또는 아래 방법으로 로그인
 				</div>
-				<button className="flex justify-center gap-4">
+				<button type='button' onClick={handleGoogleLogin} className="flex justify-center gap-4">
 					<Image src={"/google.png"} alt="googleLogo" width={24} height={24} />
 					구글 로그인
 				</button>

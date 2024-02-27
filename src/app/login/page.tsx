@@ -1,4 +1,5 @@
 "use client";
+import { handleGoogleLogin } from "@/utils/login/providers";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,7 +17,7 @@ interface Action {
 
 export default function Login() {
 	const [loginProgress, setLoginProgress] = useState(false);
-	const [duplicate, setDuplicate] = useState(false);
+	const [fail, setFail] = useState(false);
 	const [format, setFormat] = useState(false);
 	const [state, dispatch] = useReducer(
 		(state: State, action: Action) => {
@@ -40,29 +41,16 @@ export default function Login() {
 		e.preventDefault();
 		try {
 			setLoginProgress(true);
-			setDuplicate(false);
+			setFail(false);
 			const {email,password} = state;
-			await signIn('credentials',{email,password});
-			
-			// const {ok,statusText} = await fetch("/api/login", {
-			// 	method: "POST",
-			// 	body: JSON.stringify({
-			// 		email: state.email,
-			// 		password: state.password,
-			// 	}),
-			// 	headers: { "Content-Type": "application/json" },
-			// });
-			// if (!ok) {
-			// 	if (statusText.includes("duplicate")) throw Error("duplicate");
-			// 	throw Error();
-			// }
+			await signIn('credentials',{email,password, callbackUrl:'http://localhost:3000'});
 			setLoginProgress(false);
 		} catch (err) {
 			setLoginProgress(false);
-			if (err instanceof Error) {
-				let { message } = err;
-				message.includes("duplicate") ? setDuplicate(true) : setFormat(true);
-			}
+			// if (err instanceof Error) {
+			// 	let { message } = err;
+			// 	message.includes("fail") ? setFail(true) : setFormat(true);
+			// }
 		}
 	};
 
@@ -94,21 +82,15 @@ export default function Login() {
 				<button type="submit" disabled={loginProgress}>
 					로그인
 				</button>
-				{duplicate ? (
+				{fail ? (
 					<div className="my-4 text-center text-primary">
-						이미 가입된 계정입니다.
-					</div>
-				) : format ? (
-					<div className="my-4 text-center text-primary">
-						이메일 또는 패스워드를 확인해주세요.
-						<br/>
-						영문자 + 숫자 또는 특수문자 포함 8~20자
+						로그인 실패 다시 시도해주세요.
 					</div>
 				) : null}
 				<div className="my-4 text-center text-gray-500">
 					또는 아래 방법으로 로그인
 				</div>
-				<button className="flex justify-center gap-4">
+				<button type='button' onClick={handleGoogleLogin} className="flex justify-center gap-4">
 					<Image src={"/google.png"} alt="googleLogo" width={24} height={24} />
 					구글 로그인
 				</button>
