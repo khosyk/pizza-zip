@@ -2,16 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-body{
-  -webkit-user-select:none;
-  -moz-user-select:none;
-  -ms-user-select:none;
-  user-select:none;
+body {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
-section.hero{
+section.hero {
   @apply grid justify-center px-8;
-  grid-template-columns: .9fr 1fr;
+  grid-template-columns: 0.9fr 1fr;
   @media (max-width: 767px) {
   }
   @media (max-width: 575px) {
@@ -32,22 +32,21 @@ section.hero{
 /* disabled */
 input[type='email'],
 input[type='password'],
-input[type='text']{
+input[type='text'] {
   @apply block w-full my-2 rounded-xl;
   @apply border p-2 border-gray-300 bg-gray-100;
-  @apply disabled:text-gray-500
+  @apply disabled:text-gray-500;
 }
 
-
-button[type="submit"], .submit{
+button[type='submit'],
+.submit {
   @apply border-0 bg-primary text-white;
 }
 
 /* hover & disabled */
-.register button{ 
+.register button {
   @apply w-full font-semibold;
   @apply border border-gray-300 rounded-xl px-6 py-2;
   @apply hover:shadow-md hover:shadow-gray-200;
   @apply disabled:cursor-not-allowed;
 }
-
