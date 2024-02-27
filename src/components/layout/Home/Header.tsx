@@ -20,7 +20,7 @@ export default function Header() {
 				<Link href={""}>Contact</Link>
 			</nav>
 			<nav className="flex items-center gap-4 text-gray-500 font-semibold">
-				{status === "authenticated" ? (
+				{status === "authenticated" && (
 					<>
 						<button
 							onClick={() => signOut()}
@@ -28,7 +28,8 @@ export default function Header() {
 							Logout
 						</button>
 					</>
-				) : (
+				) }
+				{status === "unauthenticated" && (
 					<>
 						<Link href={"/login"}>Login</Link>
 						<Link
