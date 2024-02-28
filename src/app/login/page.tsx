@@ -1,11 +1,12 @@
 'use client'
+
 import { handleGoogleLogin } from '@/utils/login/providers'
 import { signIn } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useCallback, useReducer, useState } from 'react'
 
-interface State {
+interface ReduceState {
   email: string
   password: string
 }
@@ -18,16 +19,16 @@ interface Action {
 export default function Login() {
   const [loginProgress, setLoginProgress] = useState(false)
   const [fail, setFail] = useState(false)
-  const [format, setFormat] = useState(false)
+  // const [format, setFormat] = useState(false)
   const [state, dispatch] = useReducer(
-    (state: State, action: Action) => {
+    (status: ReduceState, action: Action) => {
       switch (action.type) {
         case 'email':
-          return { ...state, email: action.payload }
+          return { ...status, email: action.payload }
         case 'password':
-          return { ...state, password: action.payload }
+          return { ...status, password: action.payload }
         default:
-          return state
+          return status
       }
     },
     { email: '', password: '' },
@@ -100,12 +101,12 @@ export default function Login() {
           onClick={handleGoogleLogin}
           className="flex justify-center gap-4"
         >
-          <Image src={'/google.png'} alt="googleLogo" width={24} height={24} />
+          <Image src='/google.png' alt="googleLogo" width={24} height={24} />
           구글 로그인
         </button>
         <div className="my-6 text-center pt-5  border-t text-gray-500">
           회원이 아니신가요?
-          <Link className="pl-2 hover:underline" href={'/register'}>
+          <Link className="pl-2 hover:underline" href='/register'>
             회원가입하러가기 &raquo;
           </Link>
         </div>
