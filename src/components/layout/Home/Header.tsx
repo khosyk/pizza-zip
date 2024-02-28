@@ -4,10 +4,15 @@ import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import React from 'react'
 
-// type Props = {}
-
 export default function Header() {
-  const { status } = useSession()
+  const { status, data } = useSession();
+  
+  let userName = data?.user?.name || data?.user?.email;
+
+  if(userName?.includes(' ')){
+    const name = userName.split(' ')[0]
+    userName = name;
+  }
 
   return (
     <header className="flex items-center justify-between p-5">
@@ -22,13 +27,16 @@ export default function Header() {
       </nav>
       <nav className="flex items-center gap-4 text-gray-500 font-semibold">
         {status === 'authenticated' && (
+          <>
+          <Link href='/profile' className='whitespace-nowrap'>Hello, {userName}</Link>
           <button
             type='button'
             onClick={() => signOut()}
             className="bg-primary text-white rounded-full px-8 py-2"
-          >
+            >
             Logout
           </button>
+            </>
         )}
         {status === 'unauthenticated' && (
           <>
