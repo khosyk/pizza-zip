@@ -1,7 +1,5 @@
-import Image from 'next/image'
 import React, { Suspense } from 'react'
 import Right from '../../icons/Right'
-import PizzaWrap from './PizzaWrap'
 import Loading from './Loading'
 
 // type Props = {}
@@ -23,11 +21,11 @@ export default function Hero() {
           창의적인 조합으로 최고의 피자 모험을 경험해 보세요!
         </p>
         <div className="flex gap-4 text-sm">
-          <button className="bg-primary text-white uppercase flex text-center px-4 py-2 rounded-full gap-2">
+          <button type='button' className="bg-primary text-white uppercase flex text-center px-4 py-2 rounded-full gap-2">
             Order now
             <Right />
           </button>
-          <button className="font-semibold flex gap-2 py-2 text-gray-600">
+          <button type='button' className="font-semibold flex gap-2 py-2 text-gray-600">
             Learn more
             <Right />
           </button>
