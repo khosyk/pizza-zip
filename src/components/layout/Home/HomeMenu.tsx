@@ -13,19 +13,19 @@ export default function HomeMenu() {
           <Image
             width={170}
             height={100}
-            src={'/sallad1.png'}
+            src="/sallad1.png"
             objectFit="contain"
-            alt={'sallad'}
-          ></Image>
+            alt="sallad"
+          />
         </div>
         <div className="flex -z-10 absolute right-0 -top-[280px]">
           <Image
             width={300}
             height={220}
-            src={'/sallad2.png'}
+            src="/sallad2.png"
             objectFit="contain"
-            alt={'sallad'}
-          ></Image>
+            alt="sallad"
+          />
         </div>
       </div>
       <SectionHeaders title="Check Out" subTitle="Menu" />
