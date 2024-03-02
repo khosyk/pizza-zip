@@ -1,10 +1,9 @@
 import mongoose, { Query } from 'mongoose'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
-import { User } from '../../models/User'
 import bcrypt from 'bcrypt'
 import NextAuth from 'next-auth'
-import { NextResponse } from 'next/server'
+import { User } from '../../models/User'
 
 interface UserQuery extends Query<any, any, {}, any, 'findOne'> {
   password?: string
@@ -29,8 +28,7 @@ const handler = NextAuth({
         password: { label: 'Password', type: 'password' },
       },
       async authorize(
-        credentials: Record<'email' | 'password', string> | undefined,
-        _,
+        credentials: Record<'email' | 'password', string> | undefined
       ) {
         const email = credentials?.email
         const password = credentials?.password
@@ -40,10 +38,11 @@ const handler = NextAuth({
           user &&
           bcrypt.compareSync(password as string, user?.password as string)
 
-        if (passwordOk) {
-          return user
+        if (!passwordOk) {
+          return null
         }
-        return null
+
+        return user
       },
     }),
   ],
