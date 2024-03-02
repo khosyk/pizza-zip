@@ -1,15 +1,16 @@
 'use client'
+
 import { handleGoogleLogin } from '@/utils/login/providers'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useCallback, useEffect, useReducer, useState } from 'react'
+import React, { useCallback, useReducer, useState } from 'react'
 
-interface State {
+interface ReducerState {
   email: string
   password: string
 }
 
-interface Action {
+interface ReducerAction {
   type: string
   payload: string
 }
@@ -19,8 +20,10 @@ export default function Register() {
   const [userCreated, setUserCreated] = useState(false)
   const [duplicate, setDuplicate] = useState(false)
   const [format, setFormat] = useState(false)
+  const [other, setOther] = useState(false)
+
   const [state, dispatch] = useReducer(
-    (state: State, action: Action) => {
+    (state: ReducerState, action: ReducerAction) => {
       switch (action.type) {
         case 'email':
           return { ...state, email: action.payload }
@@ -44,6 +47,7 @@ export default function Register() {
       setUserCreated(false)
       setDuplicate(false)
       setFormat(false)
+      setOther(false)
       const { ok, statusText } = await fetch('/api/register', {
         method: 'POST',
         body: JSON.stringify({
@@ -54,6 +58,8 @@ export default function Register() {
       })
       if (!ok) {
         if (statusText.includes('duplicate')) throw Error('duplicate')
+        if (statusText.includes('email')) throw Error('email')
+        if (statusText.includes('password')) throw Error('password')
         throw Error('else')
       }
       setCreatingUser(false)
@@ -61,8 +67,11 @@ export default function Register() {
     } catch (err) {
       setCreatingUser(false)
       if (err instanceof Error) {
-        let { message } = err
-        message.includes('duplicate') ? setDuplicate(true) : setFormat(true)
+        const { message } = err
+        if (message.includes('duplicate')) setDuplicate(true)
+        if (message.includes('email') || message.includes('password'))
+          setFormat(true)
+        if (message.includes('else')) setOther(true)
       }
     }
   }
@@ -72,11 +81,7 @@ export default function Register() {
       <h1 className="text-center font-semibold text-primary text-4xl">
         회원가입
       </h1>
-      <form
-        onSubmit={handleSubmit}
-        className="block max-w-xs mx-auto mt-5"
-        action=""
-      >
+      <form onSubmit={handleSubmit} className="max-w-xs mx-auto mt-5">
         <input
           type="text"
           name="email"
@@ -100,7 +105,7 @@ export default function Register() {
           <div className="my-4 text-center">
             회원가입 완료!
             <br />
-            <Link className="hover:underline" href={'/login'}>
+            <Link className="hover:underline" href="/login">
               로그인하기 &raquo;
             </Link>
           </div>
@@ -109,11 +114,17 @@ export default function Register() {
           <div className="my-4 text-center text-primary">
             이미 가입된 계정입니다.
           </div>
-        ) : format ? (
+        ) : null}
+        {format ? (
           <div className="my-4 text-center text-primary">
             이메일 또는 패스워드를 확인해주세요.
             <br />
             영문자 + 숫자 또는 특수문자 포함 8~20자
+          </div>
+        ) : null}
+        {other ? (
+          <div className="my-4 text-center text-primary">
+            에러 발생, 잠시후 다시 시도해주세요.
           </div>
         ) : null}
         <div className="my-4 text-center text-gray-500">
@@ -124,12 +135,12 @@ export default function Register() {
           onClick={handleGoogleLogin}
           className="flex justify-center gap-4"
         >
-          <Image src={'/google.png'} alt="googleLogo" width={24} height={24} />
+          <Image src="/google.png" alt="googleLogo" width={24} height={24} />
           구글 로그인
         </button>
         <div className="my-6 text-center pt-5  border-t text-gray-500">
           이미 회원이신가요?
-          <Link className="pl-2 hover:underline" href={'/login'}>
+          <Link className="pl-2 hover:underline" href="/login">
             로그인하기 &raquo;
           </Link>
         </div>
