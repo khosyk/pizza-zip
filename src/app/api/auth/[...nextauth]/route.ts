@@ -2,14 +2,14 @@ import mongoose, { Query } from 'mongoose'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
 import bcrypt from 'bcrypt'
-import NextAuth from 'next-auth'
+import NextAuth, { getServerSession } from 'next-auth'
 import { User } from '../../models/User'
 
 interface UserQuery extends Query<any, any, {}, any, 'findOne'> {
   password?: string
 }
 
-const handler = NextAuth({
+export const NextAuthOption = {
   secret: process.env.SECRET,
   providers: [
     GoogleProvider({
@@ -46,6 +46,12 @@ const handler = NextAuth({
       },
     }),
   ],
-})
+}
+
+export function auth() {
+  return getServerSession(NextAuthOption)
+} 
+
+const handler = NextAuth(NextAuthOption)
 
 export { handler as GET, handler as POST }
