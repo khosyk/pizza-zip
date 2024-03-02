@@ -3,7 +3,7 @@
 import { handleGoogleLogin } from '@/utils/login/providers'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useCallback, useReducer, useState } from 'react'
+import React, { useReducer, useState } from 'react'
 
 interface ReducerState {
   email: string
@@ -18,27 +18,28 @@ interface ReducerAction {
 export default function Register() {
   const [creatingUser, setCreatingUser] = useState(false)
   const [userCreated, setUserCreated] = useState(false)
+  // register errorCase
   const [duplicate, setDuplicate] = useState(false)
   const [format, setFormat] = useState(false)
   const [other, setOther] = useState(false)
 
   const [state, dispatch] = useReducer(
-    (state: ReducerState, action: ReducerAction) => {
-      switch (action.type) {
+    (reducerState: ReducerState, reducerAction: ReducerAction) => {
+      switch (reducerAction.type) {
         case 'email':
-          return { ...state, email: action.payload }
+          return { ...reducerState, email: reducerAction.payload }
         case 'password':
-          return { ...state, password: action.payload }
+          return { ...reducerState, password: reducerAction.payload }
         default:
-          return state
+          return reducerState
       }
     },
     { email: '', password: '' },
   )
 
-  const handleInput = useCallback((e: React.FormEvent<HTMLInputElement>) => {
+  const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
     dispatch({ type: e.currentTarget.name, payload: e.currentTarget.value })
-  }, [])
+  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
