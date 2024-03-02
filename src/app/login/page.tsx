@@ -4,7 +4,7 @@ import { handleGoogleLogin } from '@/utils/login/providers'
 import { signIn } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useCallback, useReducer, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useCallback, useReducer, useState } from 'react'
 
 type ReduceState = {
   email: string
@@ -33,11 +33,11 @@ export default function Login() {
     { email: '', password: '' },
   )
 
-  const handleInput = useCallback((e: React.FormEvent<HTMLInputElement>) => {
+  const handleInput = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     dispatch({ type: e.currentTarget.name, payload: e.currentTarget.value })
   }, [])
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
       setLoginProgress(true)
@@ -54,12 +54,10 @@ export default function Login() {
       if (res?.status === 401) {
         setFail(true)
       }
-
-      setLoginProgress(false)
     } catch (err) {
-      setLoginProgress(false)
       setFail(true)
-      console.log('ERROR:', err)
+    } finally{
+      setLoginProgress(false)
     }
   }
 
