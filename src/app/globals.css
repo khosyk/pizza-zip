@@ -33,9 +33,9 @@ section.hero {
 input[type='email'],
 input[type='password'],
 input[type='text'] {
-  @apply block w-full rounded-xl;
+  @apply block w-full rounded-xl mb-2;
   @apply border p-2 border-gray-300 bg-gray-100;
-  @apply disabled:text-gray-500;
+  @apply disabled:text-gray-500 disabled:bg-gray-300; 
 }
 
 button[type='submit'],

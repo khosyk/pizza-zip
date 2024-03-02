@@ -4,14 +4,14 @@ import { handleGoogleLogin } from '@/utils/login/providers'
 import { signIn } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useCallback, useReducer, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useCallback, useReducer, useState } from 'react'
 
-interface ReduceState {
+type ReduceState = {
   email: string
   password: string
 }
 
-interface Action {
+type Action = {
   type: string
   payload: string
 }
@@ -19,7 +19,6 @@ interface Action {
 export default function Login() {
   const [loginProgress, setLoginProgress] = useState(false)
   const [fail, setFail] = useState(false)
-  // const [format, setFormat] = useState(false)
   const [state, dispatch] = useReducer(
     (status: ReduceState, action: Action) => {
       switch (action.type) {
@@ -34,28 +33,31 @@ export default function Login() {
     { email: '', password: '' },
   )
 
-  const handleInput = useCallback((e: React.FormEvent<HTMLInputElement>) => {
+  const handleInput = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     dispatch({ type: e.currentTarget.name, payload: e.currentTarget.value })
   }, [])
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
       setLoginProgress(true)
       setFail(false)
+
       const { email, password } = state
-      await signIn('credentials', {
+      const res = await signIn('credentials', {
         email,
         password,
         callbackUrl: 'http://localhost:3000',
+        redirect: false,
       })
-      setLoginProgress(false)
+
+      if (res?.status === 401) {
+        setFail(true)
+      }
     } catch (err) {
+      setFail(true)
+    } finally{
       setLoginProgress(false)
-      // if (err instanceof Error) {
-      // 	let { message } = err;
-      // 	message.includes("fail") ? setFail(true) : setFormat(true);
-      // }
     }
   }
 
@@ -101,12 +103,12 @@ export default function Login() {
           onClick={handleGoogleLogin}
           className="flex justify-center gap-4"
         >
-          <Image src='/google.png' alt="googleLogo" width={24} height={24} />
+          <Image src="/google.png" alt="googleLogo" width={24} height={24} />
           구글 로그인
         </button>
         <div className="my-6 text-center pt-5  border-t text-gray-500">
           회원이 아니신가요?
-          <Link className="pl-2 hover:underline" href='/register'>
+          <Link className="pl-2 hover:underline" href="/register">
             회원가입하러가기 &raquo;
           </Link>
         </div>
