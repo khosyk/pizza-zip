@@ -1,9 +1,10 @@
+/* eslint-disable import/prefer-default-export */
 import mongoose from 'mongoose'
 import { NextRequest, NextResponse } from 'next/server'
 import { User } from '../models/User'
 import { auth } from '../auth/[...nextauth]/route'
 
-export default async function PUT(req: NextRequest) {
+export async function PUT(req: NextRequest) {
   try {
     mongoose.connect(process.env.MONGO as string)
     const data = await req.json()
