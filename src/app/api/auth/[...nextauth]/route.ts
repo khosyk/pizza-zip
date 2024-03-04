@@ -3,6 +3,8 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
 import bcrypt from 'bcrypt'
 import NextAuth, { getServerSession } from 'next-auth'
+import clientPromise from '@/lib/mongoAdapter'
+import { MongoDBAdapter } from '@auth/mongodb-adapter'
 import { User } from '../../models/User'
 
 interface UserQuery extends Query<any, any, {}, any, 'findOne'> {
@@ -11,6 +13,7 @@ interface UserQuery extends Query<any, any, {}, any, 'findOne'> {
 
 export const NextAuthOption = {
   secret: process.env.SECRET,
+  adapter: MongoDBAdapter(clientPromise),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
