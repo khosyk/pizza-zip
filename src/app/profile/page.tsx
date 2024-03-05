@@ -13,6 +13,7 @@ export default function Profile() {
   const [name,setName] = useState<string | undefined>('')
   const [loading, setLoading] = useState<boolean>(false)
   const [saved,setSaved] = useState<boolean>(false)
+  const [saving,setSaving] = useState<boolean>(false)
   const [isError,setIsError] = useState<boolean>(false)
 
   useEffect(() => {
@@ -44,11 +45,13 @@ export default function Profile() {
     try{
       setSaved(false)
       setIsError(false)
+      setSaving(true)
       const res = await fetch('/api/profile',{
         method:'PUT',
         headers: {'Content-Type':'application/json'},
         body:JSON.stringify({name})
       })
+      setSaving(false);
       if(res.ok){
         setSaved(true)
         return 
@@ -56,7 +59,8 @@ export default function Profile() {
       Error('ERROR PROFILE SAVE')
     }catch(err){
       setSaved(false)
-      setIsError(true);
+      setSaving(false)
+      setIsError(true)
     }
   }
 
@@ -75,6 +79,9 @@ export default function Profile() {
         프로필
       </h1>
       <div className='max-w-md mx-auto'>
+        {saving && <h2 className='bg-blue-100 border border-blue-300 py-4 px-4 mb-2 rounded-xl'>
+          프로필 저장중
+        </h2>}
         {saved && <h2 className='bg-green-200 border border-green-400 py-4 px-4 mb-2 rounded-xl'>
           프로필 저장 성공!
         </h2>}
