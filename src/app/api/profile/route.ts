@@ -10,7 +10,6 @@ export async function PUT(req: NextRequest) {
     const data = await req.json()
     const session = await auth()
     const email = session?.user?.email
-    console.log('data:::', data);
     if ('name' in data) {
       await User.updateOne({ email },  { name: data.name })
       return NextResponse.json({ message: '프로필 업데이트됨' });
