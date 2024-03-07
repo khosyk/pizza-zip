@@ -5,6 +5,7 @@ type User = {
   name:string
   email: string
   password: string
+  image:string
 }
 
 const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
@@ -38,6 +39,9 @@ const UserSchema = new Schema<User>(
         },
       },
     },
+    image:{
+      type:String
+    }
   },
   {
     timestamps: true,
