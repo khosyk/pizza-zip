@@ -11,16 +11,16 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 export default function Profile() {
   const { status, data } = useSession()
   const [name,setName] = useState<string | undefined>('')
-  const [loading, setLoading] = useState<boolean>(false)
-  const [saved,setSaved] = useState<boolean>(false)
-  const [saving,setSaving] = useState<boolean>(false)
-  const [isError,setIsError] = useState<boolean>(false)
+  const [image,setImage] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [saved,setSaved] = useState(false)
+  const [saving,setSaving] = useState(false)
+  const [isError,setIsError] = useState(false)
 
   useEffect(() => {
     if(status === 'authenticated'){
-      if(data?.user?.name){
-        setName(data.user.name)
-      }
+      if(data?.user?.name)setName(data.user.name)
+      if(data?.user?.image)setImage(data?.user?.image)
     }
 
     if(status !== 'loading'){
@@ -32,8 +32,7 @@ export default function Profile() {
   if (status === 'unauthenticated') {
     return redirect('/login')
   }
-
-  const userImage = data?.user?.image
+  
   const userEmail = data?.user?.email ? data?.user?.email : ''
 
   const handleInput = (e:ChangeEvent<HTMLInputElement>) =>{
@@ -49,11 +48,43 @@ export default function Profile() {
       const res = await fetch('/api/profile',{
         method:'PUT',
         headers: {'Content-Type':'application/json'},
-        body:JSON.stringify({name})
+        body:JSON.stringify({name,image})
       })
       setSaving(false);
       if(res.ok){
         setSaved(true)
+        return 
+      }
+      Error('ERROR PROFILE SAVE')
+    }catch(err){
+      setSaved(false)
+      setSaving(false)
+      setIsError(true)
+    }
+  }
+
+  const handleProfilePhotoChange = async (e:FormEvent<HTMLInputElement>) => {
+    e.preventDefault()
+    try{
+      setSaved(false)
+      setIsError(false)
+      setSaving(true)
+      const files = e?.currentTarget?.files; 
+      const file = new FormData();  
+      if(!files || !(files.length > 0)){
+        setIsError(true);
+        throw Error('No File')
+      }
+      file.set('file', files[0])
+      const res = await fetch('/api/upload',{
+        method:'POST',
+        body:file
+      })
+      const result = await res.json();
+      setSaving(false);
+      if(res.ok){
+        setSaved(true)
+        setImage(result);
         return 
       }
       Error('ERROR PROFILE SAVE')
@@ -92,15 +123,18 @@ export default function Profile() {
       <div className="max-w-md mx-auto">
         <div className="flex gap-4">
           <div>
-            <Image
+            {image && <Image
               className='rounded-xl mb-4'
-              src={userImage as string}
+              src={image}
               width="100"
               height="100"
               objectFit='contain'
               alt="Avatar"
-            />
-            <button type='button' className='w-full border py-2 rounded-xl'>이미지 변경</button>
+            />}
+            <label htmlFor='fileUpload'>
+            <input id='fileUpload' type='file' className='hidden' onChange={handleProfilePhotoChange}/>
+            <span className='block text-center w-full border py-2 rounded-xl' >이미지 변경</span>
+            </label>
           </div>
           <form onSubmit={handleProfileEdit} className="flex flex-col grow justify-between">
             <input className='' type="text" onChange={handleInput} value={name} placeholder="이름을 입력해주세요" />
