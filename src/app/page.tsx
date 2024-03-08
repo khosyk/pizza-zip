@@ -1,4 +1,4 @@
-import Hero from '@/components/layout/Home/Hero'
+import HomeMainSection from '@/components/layout/Home/HomeMainSection'
 import HomeAbout from '@/components/layout/Home/HomeAbout'
 import HomeMenu from '@/components/layout/Home/HomeMenu'
 import React from 'react'
@@ -6,7 +6,7 @@ import React from 'react'
 export default function Home() {
   return (
     <>
-      <Hero />
+      <HomeMainSection />
       <HomeMenu />
       <HomeAbout />
     </>

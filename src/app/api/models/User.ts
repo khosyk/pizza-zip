@@ -1,19 +1,20 @@
 import { Schema, models, model } from 'mongoose'
 import bcrypt from 'bcrypt'
 
-type User = {
+type UserProps = {
   name:string
   email: string
   password: string
   image:string
+  tel:string
+  address:string
 }
 
 const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
-//8~20자 영문자or수자or특수문자 2가지 이상 조합
 const passwordRegex =
   /^(?!((?:[A-Za-z]+)|(?:[~!@#$%^&*()_+=]+)|(?:[0-9]+))$)[A-Za-z\d~!@#$%^&*()_+=]{8,20}$/ 
 
-const UserSchema = new Schema<User>(
+const UserSchema = new Schema<UserProps>(
   {
     name: { type: String },
     email: {
@@ -41,7 +42,13 @@ const UserSchema = new Schema<User>(
     },
     image:{
       type:String
-    }
+    },
+    tel:{
+      type:String
+    },
+    address:{
+      type:String
+    },
   },
   {
     timestamps: true,
@@ -55,4 +62,5 @@ UserSchema.post('validate', (user) => {
   user.password = hashed
 })
 
+// eslint-disable-next-line import/prefer-default-export
 export const User = models?.User || model('User', UserSchema)

@@ -9,7 +9,7 @@ body {
   user-select: none;
 }
 
-section.hero {
+section.homeMain {
   @apply grid justify-center px-8;
   grid-template-columns: 0.9fr 1fr;
   @media (max-width: 767px) {
@@ -32,6 +32,7 @@ section.hero {
 /* disabled */
 input[type='email'],
 input[type='password'],
+input[type='tel'],
 input[type='text'] {
   @apply block w-full rounded-xl mb-2;
   @apply border p-2 border-gray-300 bg-gray-100;

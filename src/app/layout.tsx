@@ -4,6 +4,7 @@ import { Noto_Sans_KR } from 'next/font/google'
 import Header from '@/components/layout/Home/Header'
 import Footer from '@/components/layout/Home/Footer'
 import AppProvider from '@/components/layout/AppProvider'
+import { Toaster } from 'react-hot-toast'
 
 const noto = Noto_Sans_KR({
   subsets: ['latin'],
@@ -25,6 +26,7 @@ export default function RootLayout({
       <body className={noto.className}>
         <main className="max-w-4xl mx-auto">
           <AppProvider>
+          <Toaster/>
             <Header />
             {children}
             <Footer />
