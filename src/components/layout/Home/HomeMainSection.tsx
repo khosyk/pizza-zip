@@ -1,14 +1,14 @@
 import React, { Suspense } from 'react'
 import Right from '../../icons/Right'
-import Loading from './Loading'
+import Loading from '../Loading'
 
 // type Props = {}
 
-export default function Hero() {
+export default function HomeMainSection() {
   const Pizza = React.lazy(() => import('./PizzaWrap'))
 
   return (
-    <section className="hero">
+    <section className="homeMain">
       <div className="py-12">
         <h1 className="text-4xl font-semibold">
           <span className="text-primary">피자</span>가<br />
