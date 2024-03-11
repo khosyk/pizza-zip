@@ -2,17 +2,22 @@
 
 import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 export default function Header() {
   const { status, data } = useSession();
+  const [userName, setUserName] = useState('');
   
-  let userName = data?.user?.name || data?.user?.email;
-
-  if(userName?.includes(' ')){
-    const name = userName.split(' ')[0]
-    userName = name;
-  }
+  useEffect(()=>{
+    if(data?.user){
+      const isUser = data?.user?.name || data?.user?.email
+      if(isUser){
+        const name = isUser.split(' ')[0]
+        setUserName(name)
+      }
+    }
+  },[data])
+  
 
   return (
     <header className="flex items-center justify-between p-5">

@@ -1,12 +1,13 @@
-import React, { Suspense } from 'react'
+import dynamic from 'next/dynamic'
 import Right from '../../icons/Right'
 import Loading from '../Loading'
 
-// type Props = {}
+const Pizza = dynamic(() => import('./PizzaWrap'),{
+  loading: () => <Loading/>,
+})
 
 export default function HomeMainSection() {
-  const Pizza = React.lazy(() => import('./PizzaWrap'))
-
+  
   return (
     <section className="homeMain">
       <div className="py-12">
@@ -32,15 +33,9 @@ export default function HomeMainSection() {
         </div>
       </div>
       <div className="right_hero">
-        <Suspense
-          fallback={
-            <div className="flex justify-center items-center h-full ">
-              <Loading />
-            </div>
-          }
-        >
-          {Pizza ? <Pizza /> : null}
-        </Suspense>
+        
+          <Pizza />
+        
       </div>
     </section>
   )

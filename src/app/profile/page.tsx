@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { redirect } from 'next/navigation'
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import './profile.css'
 
 export default function Profile() {
   const session = useSession()
@@ -35,9 +36,6 @@ export default function Profile() {
         .catch(err => {
           throw Error(err)
         })
-    }
-
-    if (status !== 'loading') {
       setLoading(true)
     }
   }, [status, session])
@@ -113,7 +111,7 @@ export default function Profile() {
   }
 
   return (
-    <section>
+    <section className='profile'>
       <h1 className="text-center font-semibold text-primary text-4xl mb-4">
         프로필
       </h1>
@@ -146,33 +144,49 @@ export default function Profile() {
             onSubmit={handleProfileEdit}
             className="flex flex-col grow justify-between "
           >
-            <input
-              name="name"
-              type="text"
-              onChange={handleInput}
-              value={name}
-              placeholder="이름을 입력해주세요"
-            />
-            <input
-              type="text"
-              placeholder="이메일"
-              disabled
-              value={userEmail}
-            />
-            <input
-              name="tel"
-              type="tel"
-              onChange={handleInput}
-              placeholder="전화번호"
-              value={tel}
-            />
-            <input
-              name="address"
-              type="text"
-              onChange={handleInput}
-              placeholder="주소"
-              value={address}
-            />
+            <label htmlFor="nameInput">
+              이름
+              <input
+                id="nameInput"
+                name="name"
+                type="text"
+                onChange={handleInput}
+                value={name}
+                placeholder="이름을 입력해주세요"
+              />
+            </label>
+
+            <label htmlFor="emailInput">
+              이메일
+              <input
+                id="emailInput"
+                type="text"
+                placeholder="이메일"
+                disabled
+                value={userEmail}
+              />
+            </label>
+            <label htmlFor="telInput">
+              전화번호
+              <input
+                name="tel"
+                type="tel"
+                onChange={handleInput}
+                placeholder="전화번호"
+                value={tel}
+              />
+            </label>
+            <label className='mb-2' htmlFor="addressInput">
+              주소
+              <input
+                id="addressInput"
+                name="address"
+                type="text"
+                onChange={handleInput}
+                placeholder="주소"
+                value={address}
+              />
+            </label>
             <button className="bg-primary py-2 rounded-xl" type="submit">
               저장하기
             </button>
