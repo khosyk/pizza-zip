@@ -7,6 +7,15 @@ import Image from 'next/image'
 import { redirect } from 'next/navigation'
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import './profile.css'
+import Link from 'next/link'
+
+interface UserData{
+  name:string
+  image?:string
+  tel?:string
+  address?:string
+  admin:boolean
+}
 
 export default function Profile() {
   const session = useSession()
@@ -16,26 +25,44 @@ export default function Profile() {
   const [image, setImage] = useState('')
   const [tel, setTel] = useState('')
   const [address, setAddress] = useState('')
+  const [admin, setAdmin] = useState(false);
+  const [email, setEmail] = useState('');
+  
+  const updateUserInfo = () => {
+    if(data?.user){
+      const {name : isName,image :isImage,email:isEmail} = data.user
+      if (isName) setName(isName)
+      if (isImage) setImage(isImage)
+      if (isEmail) setEmail(isEmail)
+    }
+  }
 
-  const userEmail = data?.user?.email ? data?.user?.email : ''
+  const updateUserDetailInfo = (userData:UserData) => {
+      const {address : isAddress, tel:isTel, admin:isAdmin} = userData
+          if (isAddress) setAddress(isAddress)
+          if (isTel) setTel(isTel)
+          setAdmin(isAdmin)
+  }
+
+  const fetchUser = () => {
+    fetch('/api/profile', {
+      method: 'GET',
+    })
+      .then(async res => {
+        if (res.ok) {
+          const userData = await res.json()
+          updateUserDetailInfo(userData)
+        }
+      })
+      .catch(err => {
+        throw Error(err)
+      })
+  }
 
   useEffect(() => {
     if (status === 'authenticated') {
-      if (data?.user?.name) setName(data.user.name)
-      if (data?.user?.image) setImage(data.user.image)
-      fetch('/api/profile', {
-        method: 'GET',
-      })
-        .then(async res => {
-          if (res.ok) {
-            const userData = await res.json()
-            if (userData.address) setAddress(userData.address)
-            if (userData.tel) setTel(userData.tel)
-          }
-        })
-        .catch(err => {
-          throw Error(err)
-        })
+      updateUserInfo()
+      fetchUser()
       setLoading(true)
     }
   }, [status, session])
@@ -59,7 +86,7 @@ export default function Profile() {
     }
   }
 
-  const handleProfileEdit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleProfileEdit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     const result = fetch('/api/profile', {
@@ -112,9 +139,16 @@ export default function Profile() {
 
   return (
     <section className='profile'>
-      <h1 className="text-center font-semibold text-primary text-4xl mb-4">
-        프로필
-      </h1>
+      <div className='flex gap-2'>
+        <Link href='/profile'>프로필</Link>
+        {admin && 
+        <>
+          <Link href='/category'>카테고리</Link>
+          <Link href='/menu'>메뉴</Link>
+          <Link href='/users'>사용자</Link>
+        </>
+        }
+      </div>
       <div className="max-w-md mx-auto">
         <div className="flex gap-4">
           <div>
@@ -163,7 +197,7 @@ export default function Profile() {
                 type="text"
                 placeholder="이메일"
                 disabled
-                value={userEmail}
+                value={email}
               />
             </label>
             <label htmlFor="telInput">
