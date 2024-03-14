@@ -7,3 +7,7 @@
   margin-top: -2px;
   @apply text-black;
 }
+
+div.tabs > * {
+  @apply bg-primary text-white rounded-full py-2 px-4
+}

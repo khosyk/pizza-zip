@@ -8,6 +8,7 @@ import { redirect } from 'next/navigation'
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import './profile.css'
 import Link from 'next/link'
+import AdminTabs from '@/components/layout/Profile/AdminTabs'
 
 interface UserData{
   name:string
@@ -139,16 +140,7 @@ export default function Profile() {
 
   return (
     <section className='profile'>
-      <div className='flex gap-2'>
-        <Link href='/profile'>프로필</Link>
-        {admin && 
-        <>
-          <Link href='/category'>카테고리</Link>
-          <Link href='/menu'>메뉴</Link>
-          <Link href='/users'>사용자</Link>
-        </>
-        }
-      </div>
+      {admin && <AdminTabs/>}
       <div className="max-w-md mx-auto">
         <div className="flex gap-4">
           <div>
